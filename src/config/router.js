@@ -6,7 +6,7 @@
             '$urlRouterProvider',
             '$locationProvider',
             function($stateProvider, $urlRouterProvider, $locationProvider){
-                $urlRouterProvider.otherwise('/home');
+                $urlRouterProvider.otherwise('/login');
                 $locationProvider.hashPrefix('');
                 $locationProvider.html5Mode(true);
             $stateProvider

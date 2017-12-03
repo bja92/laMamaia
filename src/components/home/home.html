@@ -1,6 +1,6 @@
 <div class="container-fluid noPadding" ng-init="homeCtrl.init()">
     <div class="col-md-12 noPadding">
-        <div class="col-md-4" style="padding: 0px;">
+        <div class="col-md-2" style="padding: 0px;">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Adauga Produs
@@ -12,6 +12,7 @@
                         type="text"
                         class="form-control"
                         name="productName"
+                        required
                         ng-model="homeCtrl.prod.Name"
                         placeholder="Denumire Produs"/>
                         <br />
@@ -20,6 +21,7 @@
                             type="number"
                             class="form-control"
                             name="cantitate"
+                            required
                             ng-model="homeCtrl.prod.Quantity"
                             ng-change="homeCtrl.calculateValues();"
                             placeholder="Cantitate"/>
@@ -29,13 +31,14 @@
                             type="number"
                             class="form-control"
                             name="pretFaraTVA"
+                            required
                             ng-disabled="!homeCtrl.prod.Quantity"
                             ng-change="homeCtrl.calculateValues()"
                             ng-model="homeCtrl.prod.PriceNoTVA"
                             placeholder="Pret unitar fara T.V.A"/>
                         <br />
                         <label for="productUM">U.M. produs</label>
-                        <select class="form-control" name="productUM" ng-model="homeCtrl.prod.UM">
+                        <select class="form-control" name="productUM" ng-model="homeCtrl.prod.UM" required>
                             <option value="" selected>U.M produs</option>
                             <option value="BUC">BUC</option>
                             <option value="BAX">Bax</option>
@@ -56,7 +59,7 @@
                             class="form-control"
                             name="productTVAvalue"
                             placeholder="Valoare T.V.A"
-                            readonly
+                            ng-readonly="true"
                             ng-model="homeCtrl.prod.TVAvalue"/>
                         <br />
                         <label for="acquireDate">Data achizitionarii</label>
@@ -64,22 +67,23 @@
                         type="date"
                         class="form-control"
                         min-date="today"
+                        required
                         ng-model="homeCtrl.prod.AcquireDate" />
 
                         <hr />
-                        <button type="reset" class="btn btn-danger pull-left">Reseteaza Formular</button>
-                        <button type="button" class="btn btn-success pull-right" ng-click="homeCtrl.addProduct()">Adauga Produs <i class="fa fa-cart-plus" aria-hidden="true"></i></button>
+                        <button type="reset" class="btn btn-danger pull-left">Reseteaza</button>
+                        <button type="button" class="btn btn-success pull-right" ng-disabled="!adaugaProdus.$valid" ng-click="homeCtrl.addProduct();">Adauga Produs <i class="fa fa-cart-plus" aria-hidden="true"></i></button>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="col-md-8 noPadding">
+        <div class="col-md-10 noPadding">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Lista Produse Achizitionate
                 </div>
                 <div class="panel-body">
-                    <table class="table">
+                    <table class="table table-striped table-bordered" id="tableProduct" ng-if="homeCtrl.allProducts.length">
                        <thead>
                            <tr>
                                <th>
@@ -107,7 +111,7 @@
                            </tr>
                        </thead>
                        <tbody>
-                           <tr ng-repeat="produs in homeCtrl.allProducts |filter:{name : searchName, unitMeasure: searchUM, quantity: searchQuantity } track by $index">
+                           <tr ng-repeat="produs in homeCtrl.allProducts | filter:{name : searchName, unitMeasure: searchUM, quantity: searchQuantity } track by $index">
                                <td>{{produs.name}}</td>
                                <td>{{produs.unitMeasure}}</td>
                                <td>{{produs.quantity}}</td>
@@ -115,7 +119,7 @@
                                <td>{{produs.productValue}}</td>
                                <td>{{produs.tvaValue}}</td>
                                <td>{{produs.acquireDate | date: 'dd/MM/yyyy'}}</td>
-                               <td>
+                               <td class="text-center">
                                    <a href="" ng-click="homeCtrl.deleteProduct(produs)">
                                        <i class="fa fa-trash-o" aria-hidden="true" style="color:red"></i>
                                    </a>
@@ -123,6 +127,9 @@
                            </tr>
                        </tbody>
                      </table>
+                     <div ng-if="!homeCtrl.allProducts.length">
+                        Nu exista produse adaugate!
+                     </div>
                 </div>
             </div>
         </div>

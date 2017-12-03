@@ -21,6 +21,17 @@
         self.productTVAvalue = '';
         self.searchFlag = false;
         self.prod = {};
+
+        $(document).ready(function() {
+            $('#tableProduct').DataTable({
+                bSort : false,
+                searching: false
+            });
+        });
+        // $('#tableProduct').dataTable({
+        //     bSort : false,
+        //     searching: false
+        // });
     };
 
     controller.prototype.addProduct = function(){
