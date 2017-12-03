@@ -69,6 +69,15 @@
                         min-date="today"
                         required
                         ng-model="homeCtrl.prod.AcquireDate" />
+                        <br />
+                        <label for="expireDate">Data expirarii</label>
+                        <input
+                        type="date"
+                        class="form-control"
+                        min-date="today"
+                        required
+                        ng-model="homeCtrl.prod.expireDate" />
+                        <br />
 
                         <hr />
                         <button type="reset" class="btn btn-danger pull-left">Reseteaza</button>
@@ -105,13 +114,14 @@
                                <th>
                                    Data achizitionarii
                                </th>
+                               <th>Data expirarii</th>
                                <th>
                                    Sterge Produs
                                </th>
                            </tr>
                        </thead>
                        <tbody>
-                           <tr ng-repeat="produs in homeCtrl.allProducts | filter:{name : searchName, unitMeasure: searchUM, quantity: searchQuantity } track by $index">
+                           <tr ng-repeat="produs in homeCtrl.allProducts | filter:{name : searchName, unitMeasure: searchUM, quantity: searchQuantity } | orderBy: expireDate track by $index">
                                <td>{{produs.name}}</td>
                                <td>{{produs.unitMeasure}}</td>
                                <td>{{produs.quantity}}</td>
@@ -119,6 +129,7 @@
                                <td>{{produs.productValue}}</td>
                                <td>{{produs.tvaValue}}</td>
                                <td>{{produs.acquireDate | date: 'dd/MM/yyyy'}}</td>
+                               <td>{{produs.expireDate | date: 'dd/MM/yyyy' }}</td>
                                <td class="text-center">
                                    <a href="" ng-click="homeCtrl.deleteProduct(produs)">
                                        <i class="fa fa-trash-o" aria-hidden="true" style="color:red"></i>

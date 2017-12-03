@@ -28,10 +28,6 @@
                 searching: false
             });
         });
-        // $('#tableProduct').dataTable({
-        //     bSort : false,
-        //     searching: false
-        // });
     };
 
     controller.prototype.addProduct = function(){
@@ -44,6 +40,7 @@
         product.productValue = self.prod.Value;
         product.tvaValue = self.prod.TVAvalue;
         product.acquireDate = self.prod.AcquireDate;
+        product.expireDate = self.prod.expireDate;
 
         self.httpServices.addProduct(product).then(function(res){
             self.prod = {};
