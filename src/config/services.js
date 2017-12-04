@@ -5,7 +5,8 @@
         return {
             addProduct: addProduct,
             getProducts: getProducts,
-            eraseProduct: eraseProduct
+            eraseProduct: eraseProduct,
+            updateProduct: updateProduct
         };
 
         function addProduct(product){
@@ -18,6 +19,10 @@
 
         function eraseProduct(product) {
             return $http.delete('/products/' + product._id);
+        }
+
+        function updateProduct(product) {
+            return $http.put('/products/' + product._id, product);
         }
 
     }]);

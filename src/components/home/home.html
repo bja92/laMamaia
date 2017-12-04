@@ -41,7 +41,7 @@
                         <select class="form-control" name="productUM" ng-model="homeCtrl.prod.UM" required>
                             <option value="" selected>U.M produs</option>
                             <option value="BUC">BUC</option>
-                            <option value="BAX">Bax</option>
+                            <option value="BAX">BAX</option>
                         </select>
                         <br />
                         <label for="productValue">Valoare produs</label>
@@ -62,6 +62,12 @@
                             ng-readonly="true"
                             ng-model="homeCtrl.prod.TVAvalue"/>
                         <br />
+                        <select class="form-control" ng-model="homeCtrl.prod.status" ng-init="homeCtrl.prod.status = 'ready'">
+                            <option value="ready">La vanzare</option>
+                            <option value="loss">Pierdut</option>
+                            <option value="expired">Expirat</option>
+                        </select>
+                        <br />
                         <label for="acquireDate">Data achizitionarii</label>
                         <input
                         type="date"
@@ -81,7 +87,8 @@
 
                         <hr />
                         <button type="reset" class="btn btn-danger pull-left">Reseteaza</button>
-                        <button type="button" class="btn btn-success pull-right" ng-disabled="!adaugaProdus.$valid" ng-click="homeCtrl.addProduct();">Adauga Produs <i class="fa fa-cart-plus" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-success pull-right" ng-if="!homeCtrl.editSelected"  ng-disabled="!adaugaProdus.$valid" ng-click="homeCtrl.addProduct();">Adauga Produs <i class="fa fa-cart-plus" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-success pull-right" ng-if="homeCtrl.editSelected"  ng-disabled="!adaugaProdus.$valid" ng-click="homeCtrl.editProductSelected(homeCtrl.editedProduct);">Editeaza Produs <i class="fa fa-cart-plus" aria-hidden="true"></i></button>
                     </form>
                 </div>
             </div>
@@ -92,7 +99,7 @@
                     Lista Produse Achizitionate
                 </div>
                 <div class="panel-body">
-                    <table class="table table-striped table-bordered" id="tableProduct" ng-if="homeCtrl.allProducts.length">
+                    <table class="table table-striped table-bordered table-hover" id="tableProduct" ng-if="homeCtrl.allProducts.length">
                        <thead>
                            <tr>
                                <th>
@@ -115,13 +122,17 @@
                                    Data achizitionarii
                                </th>
                                <th>Data expirarii</th>
+                               <th>Status</th>
                                <th>
-                                   Sterge Produs
+                                   Editeaza
+                               </th>
+                               <th>
+                                   Sterge
                                </th>
                            </tr>
                        </thead>
                        <tbody>
-                           <tr ng-repeat="produs in homeCtrl.allProducts | filter:{name : searchName, unitMeasure: searchUM, quantity: searchQuantity } | orderBy: expireDate track by $index">
+                           <tr ng-repeat="produs in homeCtrl.allProducts | filter:{name : searchName, unitMeasure: searchUM, quantity: searchQuantity } | orderBy: 'expireDate' track by $index" ng-class="produs._id === homeCtrl.editedProduct._id ? 'editingProduct' : ''">
                                <td>{{produs.name}}</td>
                                <td>{{produs.unitMeasure}}</td>
                                <td>{{produs.quantity}}</td>
@@ -130,6 +141,16 @@
                                <td>{{produs.tvaValue}}</td>
                                <td>{{produs.acquireDate | date: 'dd/MM/yyyy'}}</td>
                                <td>{{produs.expireDate | date: 'dd/MM/yyyy' }}</td>
+                               <td>
+                                   <span ng-if="produs.status === 'ready'" class="label label-success">In vanzare</span>
+                                   <span ng-if="produs.status === 'loss'" class="label label-warning">Pierdut</span>
+                                   <span ng-if="produs.status === 'expired'" class="label label-danger">Expirat</span>
+                               </td>
+                               <td class="text-center">
+                                   <a href="" ng-click="homeCtrl.editProduct(produs)">
+                                       <i class="fa fa-pencil-square-o" aria-hidden="true" style="color:blue"></i>
+                                   </a>
+                               </td>
                                <td class="text-center">
                                    <a href="" ng-click="homeCtrl.deleteProduct(produs)">
                                        <i class="fa fa-trash-o" aria-hidden="true" style="color:red"></i>

@@ -21,6 +21,7 @@
         self.productTVAvalue = '';
         self.searchFlag = false;
         self.prod = {};
+        self.editSelected = false;
 
         $(document).ready(function() {
             $('#tableProduct').DataTable({
@@ -41,6 +42,7 @@
         product.tvaValue = self.prod.TVAvalue;
         product.acquireDate = self.prod.AcquireDate;
         product.expireDate = self.prod.expireDate;
+        product.status = 'ready';
 
         self.httpServices.addProduct(product).then(function(res){
             self.prod = {};
@@ -81,6 +83,63 @@
                 self.allProducts = res.data;
             });
         });
+    };
+
+
+    controller.prototype.verifyExpireDate = function(product) {
+        var self = this;
+        var expireDate = new Date(product.expireDate);
+        var expireDateFromToday = new Date().addDays(8);
+        var today = new Date();
+        if(today > expireDate < expireDateFromToday) {
+            return 'expiring';
+        }
+    };
+
+    controller.prototype.editProduct = function(produs) {
+        var self = this;
+        self.prod.Name = produs.name;
+        self.prod.Quantity = produs.quantity;
+        self.prod.PriceNoTVA = produs.price;
+        self.prod.UM = produs.unitMeasure;
+        self.prod.Value = produs.productValue;
+        self.prod.TVAvalue = produs.tvaValue;
+        self.prod.AcquireDate = new Date(produs.acquireDate);
+        self.prod.expireDate = new Date(produs.expireDate);
+        self.prod.status = produs.status;
+
+        self.editedProduct = produs;
+        self.editSelected = true;
+    };
+
+    controller.prototype.editProductSelected = function(produs) {
+        var self = this;
+        var obj = {};
+        obj.name = self.prod.Name;
+        obj.quantity = self.prod.Quantity;
+        obj.price = self.prod.PriceNoTVA;
+        obj.unitMeasure = self.prod.UM;
+        obj.productValue = self.prod.Value;
+        obj.tvaValue = self.prod.TVAvalue;
+        obj.acquireDate = self.prod.AcquireDate;
+        obj.expireDate = self.prod.expireDate;
+        obj.status = self.prod.status;
+        obj._id = self.editedProduct._id;
+
+        self.httpServices.updateProduct(obj).then(function(res){
+            self.httpServices.getProducts().then(function(res){
+                self.allProducts = res.data;
+                self.editSelected = false;
+                self.editedProduct = {};
+                self.prod = {};
+            });
+        });
+    };
+
+    Date.prototype.addDays = function(days) {
+        var dat = new Date(this.valueOf());
+        dat.setDate(dat.getDate() + days);
+        return dat;
     };
 
     controller.$inject = [

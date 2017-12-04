@@ -11,6 +11,9 @@
   height: 200px;
   overflow: auto;
 }
+.editingProduct {
+  background-color: #D9EDF7 !important;
+}
 .button-record {
   display: inline-flex;
   width: 10px;
