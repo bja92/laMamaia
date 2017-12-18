@@ -53,15 +53,11 @@ app.put('/products/:id', function(req, res){
     var id = req.params.id;
     Products.laMamaia.findAndModify({ query: { _id: mongojs.ObjectId(id) },
         update: { $set:
-            { acquireDate: req.body.acquireDate,
+            {
               expireDate: req.body.expireDate,
               name: req.body.name,
-              price: req.body.price,
-              productValue: req.body.productValue,
               quantity: req.body.quantity,
               status: req.body.status,
-              tvaValue: req.body.tvaValue,
-              unitMeasure: req.body.unitMeasure
             }},
         new: true }, function(err, data) {
             res.json(data);
