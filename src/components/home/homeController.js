@@ -2,13 +2,13 @@
     'use strict';
 
     var controller = function(
-        localStorageData,
+        sessionStorage,
         httpServices,
         $state,
         productsData
     ) {
 
-        this.localStorageData = localStorageData;
+        this.sessionStorage = sessionStorage;
         this.httpServices = httpServices;
         this.$state = $state;
         this.productsData = productsData.data;
@@ -22,6 +22,7 @@
         self.searchFlag = false;
         self.prod = {};
         self.editSelected = false;
+        self.selectedIndex = 0;
 
         $(document).ready(function() {
             $('#tableProduct').DataTable({
@@ -46,9 +47,6 @@
 
         self.httpServices.addProduct(product).then(function(res){
             self.prod = {};
-            self.httpServices.getProducts().then(function(res){
-                self.allProducts = res.data;
-            });
         });
     };
 
@@ -143,7 +141,7 @@
     };
 
     controller.$inject = [
-        'localStorageData',
+        'sessionStorage',
         'httpServices',
         '$state',
         'productsData'

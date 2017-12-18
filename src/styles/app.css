@@ -6,6 +6,9 @@
 .vaMid {
   vertical-align: middle;
 }
+.first {
+  background-color: #FFDB99 !important;
+}
 .messages {
   padding: 5px;
   height: 200px;

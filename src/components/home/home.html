@@ -26,55 +26,11 @@
                             ng-change="homeCtrl.calculateValues();"
                             placeholder="Cantitate"/>
                         <br />
-                        <label for="pretFaraTVA">Pret fara T.V.A</label>
-                        <input
-                            type="number"
-                            class="form-control"
-                            name="pretFaraTVA"
-                            required
-                            ng-disabled="!homeCtrl.prod.Quantity"
-                            ng-change="homeCtrl.calculateValues()"
-                            ng-model="homeCtrl.prod.PriceNoTVA"
-                            placeholder="Pret unitar fara T.V.A"/>
-                        <br />
-                        <label for="productUM">U.M. produs</label>
-                        <select class="form-control" name="productUM" ng-model="homeCtrl.prod.UM" required>
-                            <option value="" selected>U.M produs</option>
-                            <option value="BUC">BUC</option>
-                            <option value="BAX">BAX</option>
-                        </select>
-                        <br />
-                        <label for="productValue">Valoare produs</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Valoare produs"
-                            name="productValue"
-                            ng-readonly="true"
-                            ng-model="homeCtrl.prod.Value" />
-                        <br />
-                        <label for="productTVAvalue">Valoare T.V.A</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="productTVAvalue"
-                            placeholder="Valoare T.V.A"
-                            ng-readonly="true"
-                            ng-model="homeCtrl.prod.TVAvalue"/>
-                        <br />
                         <select class="form-control" ng-model="homeCtrl.prod.status" ng-init="homeCtrl.prod.status = 'ready'">
                             <option value="ready">La vanzare</option>
                             <option value="loss">Pierdut</option>
                             <option value="expired">Expirat</option>
                         </select>
-                        <br />
-                        <label for="acquireDate">Data achizitionarii</label>
-                        <input
-                        type="date"
-                        class="form-control"
-                        min-date="today"
-                        required
-                        ng-model="homeCtrl.prod.AcquireDate" />
                         <br />
                         <label for="expireDate">Data expirarii</label>
                         <input
@@ -106,42 +62,29 @@
                                 <input type="text" ng-model="searchName" class="form-control" placeholder="Denumire Produs" />
                                </th>
                                <th>
-                                   <select class="form-control" ng-model="searchUM">
-                                       <option value="">All</option>
-                                       <option value="BUC">BUC</option>
-                                       <option value="BUC">BAX</option>
-                                   </select>
-                               </th>
-                               <th>
                                    <input type="text" placeholder="Cantitate" class="form-control" ng-model="searchQuantity">
                                </th>
-                               <th>Pret fara T.V.A (lei)</th>
-                               <th>Valoare produs (lei)</th>
-                               <th>Valoare T.V.A (lei)</th>
-                               <th>
-                                   Data achizitionarii
-                               </th>
-                               <th>Data expirarii</th>
-                               <th>Status</th>
-                               <th>
+                               <th class="text-center">Data expirarii</th>
+                               <th class="text-center">Status</th>
+                               <th class="text-center">
                                    Editeaza
                                </th>
-                               <th>
+                               <th class="text-center">
                                    Sterge
                                </th>
                            </tr>
                        </thead>
                        <tbody>
-                           <tr ng-repeat="produs in homeCtrl.allProducts | filter:{name : searchName, unitMeasure: searchUM, quantity: searchQuantity } | orderBy: 'expireDate' track by $index" ng-class="produs._id === homeCtrl.editedProduct._id ? 'editingProduct' : ''">
+                           <tr ng-repeat="produs in homeCtrl.allProducts | filter:{name : searchName, unitMeasure: searchUM, quantity: searchQuantity } | orderBy: 'expireDate' track by $index"
+                               ng-class="{
+                                   'editingProduct' : produs._id === homeCtrl.editedProduct._id,
+                                   'first' : $index == 0
+                               }">
+
                                <td>{{produs.name}}</td>
-                               <td>{{produs.unitMeasure}}</td>
-                               <td>{{produs.quantity}}</td>
-                               <td>{{produs.price}}</td>
-                               <td>{{produs.productValue}}</td>
-                               <td>{{produs.tvaValue}}</td>
-                               <td>{{produs.acquireDate | date: 'dd/MM/yyyy'}}</td>
-                               <td>{{produs.expireDate | date: 'dd/MM/yyyy' }}</td>
-                               <td>
+                               <td class="text-center">{{produs.quantity}}</td>
+                               <td class="text-center">{{produs.expireDate | date: 'dd/MM/yyyy' }}</td>
+                               <td class="text-center">
                                    <span ng-if="produs.status === 'ready'" class="label label-success">In vanzare</span>
                                    <span ng-if="produs.status === 'loss'" class="label label-warning">Pierdut</span>
                                    <span ng-if="produs.status === 'expired'" class="label label-danger">Expirat</span>

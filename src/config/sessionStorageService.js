@@ -1,14 +1,14 @@
 (function() {
     'use strict';
     var app = angular.module('app');
-    app.service("localStorageData", ["$window", function($window){
+    app.service("sessionStorage", ["$window", function($window){
         const getData = (key) => {
-           let data = $window.localStorage.getItem(key);
+           let data = $window.sessionStorage.getItem(key);
            return JSON.parse(data);
         }
         const storeData = (key, data) => {
             let json = JSON.stringify(data);
-            $window.localStorage.setItem(key, json);
+            $window.sessionStorage.setItem(key, json);
         }
         const removeData = (key, data_position) => {
             let data = getData(key);
@@ -21,7 +21,7 @@
             }
         }
         const removeLS = (key) => {
-                $window.localStorage.removeItem(key);
+                $window.sessionStorage.removeItem(key);
         }
         return {
             get: getData,
